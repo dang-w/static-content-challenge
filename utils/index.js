@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const glob = require('glob');
 const marked = require('marked');
+const { CONTENT_PATH } = require('../constants');
 
 // Checks that the 'content' directory exists and is accessible in the app
 const checkDir = (contentPath) => fs.accessSync(contentPath, fs.constants.F_OK, (err) => {
@@ -45,7 +46,17 @@ const parseFiles = (contentPath, parsedContentPath) => {
   return contentUrls;
 };
 
+const errorHandler = (res) => {
+  const resFilePath = path.join(CONTENT_PATH, '404.html');
+  const content = fs.readFileSync(resFilePath, 'utf8');
+
+  res.render('template.html', { content }, (err, html) => {
+    res.status(404).send(html);
+  });
+};
+
 module.exports = {
   checkDir,
   parseFiles,
+  errorHandler,
 };

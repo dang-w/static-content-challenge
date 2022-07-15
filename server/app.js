@@ -9,7 +9,7 @@ const {
   MOCK_CONTENT_PATH,
   MOCK_PARSED_CONTENT_PATH,
 } = require('../constants');
-const { checkDir, parseFiles } = require('../utils');
+const { checkDir, parseFiles, errorHandler } = require('../utils');
 
 // below supports testing - if env is test, use paths that lead
 // to mock testing data
@@ -18,6 +18,8 @@ const contentPath = nodeEnv !== 'test' ? CONTENT_PATH : MOCK_CONTENT_PATH;
 const parsedContentPath = nodeEnv !== 'test' ? PARSED_CONTENT_PATH : MOCK_PARSED_CONTENT_PATH;
 
 const app = express();
+app.use(express.static(path.join(__dirname , '../styles')));
+app.use(express.static(path.join(__dirname , '../public')));
 app.set('views', path.join(__dirname, 'views'));
 nunjucks.configure('views', {
   express: app,
@@ -29,7 +31,16 @@ checkDir(contentPath);
 const contentUrls = parseFiles(contentPath, parsedContentPath);
 
 app.get('/', (req, res) => {
-  res.status(200).send('<h1>bongiorno</h1>');
+  const resFilePath = path.join(contentPath, 'landing.html');
+  const content = fs.readFileSync(resFilePath, 'utf8');
+
+  res.render('template.html', { content }, (err, html) => {
+    if (err) {
+      errorHandler(res);
+    }
+
+    res.send(html);
+  });
 });
 
 app.get(contentUrls, (req, res) => {
@@ -40,18 +51,18 @@ app.get(contentUrls, (req, res) => {
 
     res.render('template.html', { content }, (err, html) => {
       if (err) {
-        res.status(404).send('page not found - sorry about that :(');
+        errorHandler(res);
       }
 
       res.send(html);
     });
   } catch (err) {
-    res.status(404).send('<h1>page not found - sorry about that :(</h1>');
+    errorHandler(res);
   }
 });
 
 app.get('*', (req, res) => {
-  res.status(404).send('<h1>page not found - sorry about that :(</h1>');
+  errorHandler(res);
 });
 
 module.exports = app;

@@ -12,7 +12,9 @@ afterAll(() => {
 describe('App', () => {
   test('responds to /', async () => {
     const res = await requestWithSupertest.get('/');
-    expect(res.text).toEqual('<h1>bongiorno</h1>');
+    expect(res.text).toEqual(
+      expect.stringContaining('Welcome, welcome.')
+    );
   });
 
   test('GET to existing endpoint should return correct status code', async () => {
