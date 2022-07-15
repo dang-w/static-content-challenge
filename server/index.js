@@ -93,20 +93,26 @@ getContentFiles(contentPath, (err, res) => {
 //   // });
 // });
 
-app.use(contentUrls, (req, res, next) => {
-  const { originalUrl = '' } = req;
-  const resFilePath = path.join(parsedContentPath, originalUrl, 'content.html');
-  const content = fs.readFileSync(resFilePath, 'utf8');
+app.get('/', (req, res) => {
+  res.status(200).send('<h1>bongiorno</h1>');
+});
 
-  res.render('template.html', { content }, (err, html) => {
-    if (err) {
-      res.writeHead(404);
-      res.write('page not found - sorry about that :(');
-      throw err;
-    }
+app.get(contentUrls, (req, res) => {
+  try {
+    const { originalUrl = '' } = req;
+    const resFilePath = path.join(parsedContentPath, originalUrl, 'content.html');
+    const content = fs.readFileSync(resFilePath, 'utf8');
 
-    res.send(html);
-  });
+    res.render('template.html', { content }, (err, html) => {
+      if (err) {
+        res.status(404).send('page not found - sorry about that :(');
+      }
+
+      res.send(html);
+    });
+  } catch (err) {
+    res.status(404).send('<h1>page not found - sorry about that :(</h1>');
+  }
 });
 
 app.get('*', (req, res) => {
