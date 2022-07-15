@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node server/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "NODE_ENV=production node server/server.js",
+    "test": "cross-env NODE_ENV=test jest --testTimeout=10000"
   },
   "repository": {
     "type": "git",
@@ -25,7 +25,18 @@
     "marked": "^4.0.18",
     "nunjucks": "^3.2.3"
   },
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "jest": "^28.1.3",
+    "supertest": "^6.2.4"
+  },
   "engines": {
     "node": "18.6.0"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ]
   }
 }
