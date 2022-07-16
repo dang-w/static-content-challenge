@@ -1,7 +1,6 @@
 const fs = require('fs');
 const path = require('path');
 const express = require('express');
-// const fileUpload = require('express-fileupload');
 const nunjucks = require('nunjucks');
 const {
   CONTENT_PATH,
@@ -18,8 +17,7 @@ const contentPath = nodeEnv !== 'test' ? CONTENT_PATH : MOCK_CONTENT_PATH;
 const parsedContentPath = nodeEnv !== 'test' ? PARSED_CONTENT_PATH : MOCK_PARSED_CONTENT_PATH;
 
 const app = express();
-app.use(express.static(path.join(__dirname , '../styles')));
-app.use(express.static(path.join(__dirname , '../public')));
+app.use(express.static(path.join(__dirname , '../static')));
 app.set('views', path.join(__dirname, 'views'));
 nunjucks.configure('views', {
   express: app,
