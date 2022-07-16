@@ -46,6 +46,26 @@ const parseFiles = (contentPath, parsedContentPath) => {
   return contentUrls;
 };
 
+const parseContentData = (contentPath, parsedContentPath) => {
+  checkDir(contentPath);
+  const contentUrls = parseFiles(contentPath, parsedContentPath);
+  const navMenu = contentUrls.map((contentUrl) => {
+    // Converting URL to link text;
+    // lower case all text, remove leading /, replace remaining / with >,
+    // replace - with spaces, and trim any remaining whitespace
+    const parsedText = contentUrl
+      .toLowerCase()
+      .replace('/', '')
+      .replaceAll('/', ' > ')
+      .replaceAll('-', ' ')
+      .trim();
+
+    return `<a class="nav-item" href="${contentUrl}">${parsedText}</a>`;
+  }).join(' | ');
+
+  return { contentUrls, navMenu };
+};
+
 const errorHandler = (res) => {
   const resFilePath = path.join(CONTENT_PATH, '404.html');
   const content = fs.readFileSync(resFilePath, 'utf8');
@@ -56,7 +76,8 @@ const errorHandler = (res) => {
 };
 
 module.exports = {
-  checkDir,
-  parseFiles,
+  // checkDir,
+  // parseFiles,
+  parseContentData,
   errorHandler,
 };

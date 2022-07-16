@@ -90,6 +90,16 @@ header > a {
   line-height: 2.5rem;
 }
 
+#editor {
+  min-height: 450px;
+  min-width: 60vw;
+}
+
+input,
+label {
+    margin: .4rem 0;
+}
+
 footer {
   display: flex;
   bottom: 0;

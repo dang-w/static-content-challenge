@@ -8,7 +8,7 @@ const {
   MOCK_CONTENT_PATH,
   MOCK_PARSED_CONTENT_PATH,
 } = require('../constants');
-const { checkDir, parseFiles, errorHandler } = require('../utils');
+const { parseContentData, errorHandler } = require('../utils');
 
 // below supports testing - if env is test, use paths that lead
 // to mock testing data
@@ -18,6 +18,8 @@ const parsedContentPath = nodeEnv !== 'test' ? PARSED_CONTENT_PATH : MOCK_PARSED
 
 const app = express();
 app.use(express.static(path.join(__dirname , '../static')));
+app.use(express.urlencoded({ extended: false }));
+
 app.set('views', path.join(__dirname, 'views'));
 nunjucks.configure('views', {
   express: app,
@@ -25,27 +27,13 @@ nunjucks.configure('views', {
 });
 app.set('view engine', 'html');
 
-checkDir(contentPath);
-const contentUrls = parseFiles(contentPath, parsedContentPath);
-const navMenu = contentUrls.map((contentUrl) => {
-  // Converting URL to link text;
-  // lower case all text, remove leading /, replace remaining / with >,
-  // replace - with spaces, and trim any remaining whitespace
-  const parsedText = contentUrl
-    .toLowerCase()
-    .replace('/', '')
-    .replaceAll('/', ' > ')
-    .replaceAll('-', ' ')
-    .trim();
-
-  return `<a class="nav-item" href="${contentUrl}">${parsedText}</a>`;
-});
+const { contentUrls, navMenu } = parseContentData(contentPath, parsedContentPath);
 
 app.get('/', (req, res) => {
   const resFilePath = path.join(contentPath, 'landing.html');
   const content = fs.readFileSync(resFilePath, 'utf8');
 
-  res.render('template.html', { content, nav: navMenu.join(' | ') }, (err, html) => {
+  res.render('template.html', { content, nav: navMenu }, (err, html) => {
     if (err) {
       errorHandler(res);
     }
@@ -54,13 +42,35 @@ app.get('/', (req, res) => {
   });
 });
 
+app.get('/new-content', (req, res) => {
+  const resFilePath = path.join(contentPath, 'editor.html');
+  const content = fs.readFileSync(resFilePath, 'utf8');
+
+  res.render('template.html', { content, nav: navMenu }, (err, html) => {
+    if (err) {
+      errorHandler(res);
+    }
+
+    res.send(html);
+  });
+});
+
+app.post('/upload', express.json(), (req, res) => {
+  const { markdown, filepath } = req.body;
+
+  fs.mkdirSync(`${contentPath}/${filepath}`, { recursive: true });
+  fs.writeFileSync(`${contentPath}/${filepath}/index.md`, markdown);
+
+  res.redirect('/');
+});
+
 app.get(contentUrls, (req, res) => {
   try {
     const { originalUrl = '' } = req;
     const resFilePath = path.join(parsedContentPath, originalUrl, 'content.html');
     const content = fs.readFileSync(resFilePath, 'utf8');
 
-    res.render('template.html', { content, nav: navMenu.join(' | ') }, (err, html) => {
+    res.render('template.html', { content, nav: navMenu }, (err, html) => {
       if (err) {
         errorHandler(res);
       }

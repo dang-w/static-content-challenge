@@ -1,0 +1,23 @@
+<div id="editor">
+  <form method="post" action="/upload">
+    <label for="markdown">Add markdown here:</label>
+    <textarea type="text" id="markdown" name="markdown"></textarea>
+    <script>
+      const easyMDE = new EasyMDE({
+          autoDownloadFontAwesome: true,
+          autosave: {
+              enabled: true,
+              delay: 1000,
+              uniqueId: 'markdown'
+          },
+          element: document.getElementById('markdown'),
+          initialValue: '## Autosave \nThis editor automatically saves its contents every second!'
+      });
+    </script>
+    <br />
+    <label for="filepath">Destination file path:</label>
+    <input type="text" id="filepath" name="filepath" placeholder="new/content/here" required>
+    <br />
+    <input type="submit" value="Create new content">
+  </form>
+</div>
