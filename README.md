@@ -1,31 +1,70 @@
-# Static Content challenge - mid-level
+# Static Content Challenge
 
-**NB: Please do not fork this repository, to avoid your solution being visible from this repository's GitHub page. Please clone this repository and submit your solution as a separate repository.**
+A little MVP CMS created with Node.js, Express.js and HTML 🤙
 
-Business Scenario: Acme Co's marketing department want a simple content management system and you've been tasked with building the MVP.
+<br />
 
-The challenge here is to create a node.js application that displays HTML pages at URLs that match the paths of the folders and sub-folders in the `content` folder. The content of these pages should come from a combination of the template HTML file and a markdown file containing the content.
+## Live demo
 
-For example, for a folder called `about-page`, a request to `/about-page` would return a HTML page created from the `template.html` template and the `about-page/index.md` content file. The `template.html` file contains a `{{content}}` placeholder that would be replaced by the content for each page. A request to `/blog/june/company-update` would return a HTML page using the content file at `blog/june/company-update/index.md`.
+Live instance of the site is available [here](https://dw-static-content-challenge.herokuapp.com/)!
 
-Acme's marketing department should be able to add extra folders to the `content` folder and the application should work with those without any requiring any code changes.
+(Note - while there's a navbar at the top to access existing content on app start, there's also a secret markdown editor on `/new-content` URL which allows users to create new content files directly. It needs some work though sadly - see `things to improve on` section below)
 
-This repository contains a `template.html` template file and a sample `content` folder with sub-folders containing `index.md` markdown files (or other sub-folders).
+Hosted with Heroku, which is set up to monitor any changes being pushed to `master` branch, at which point it'll pull the changes and redeploy the app. 
 
-Your application may make use of open-source code libraries. It is entirely up to you how the application performs the challenge.
+<br />
 
-## Testing
+## Running locally
 
-The application should be shipped with three tests:
+Assuming you have Git and Node.js installed, you can start this project locally with the following commands:
 
-* one that verifies that requests to valid URLs return a 200 HTTP status code
-* one that verifies that requests to valid URLs return a body that contains the HTML generated from the relevant `index.md` markdown file
-* one that verifies that requests to URLs that do not match content folders return a 404 HTTP status code
-* NB: the tests should not depend on the existing sub-folders in the `content` folder, so the tests do not break as the content changes
+```sh
+git clone https://github.com/dang-w/static-content-challenge.git
+cd static-content-challenge
+npm install
+npm start
+```
 
-## Bonus credit
+The server'll now be running and will serve the response files locally on [http://localhost:3001](http://localhost:3001)
 
-In this MVP sprint, there are two nice-to-have tickets:
+<br />
 
-* The generated HTML page should be styled in a pleasing way
-* The MVP's GitHub repository should be configured for hosting on a cloud hosting service, and include a link to a live deployment
+## Available Scripts
+
+### `npm start`
+
+Runs the app in the development mode.
+
+### `npm test`
+
+Runs local unit tests.
+
+<br />
+
+## Things to improve on
+
+As is the case in a lot of aspects of life, I didn't have as much time to devote to this as I would've liked.
+
+It's also the first Node/Express app I've written from scratch in a while, so please forgive any best practices I haven't adhered to closely enough.
+
+I've listed a number of different aspects (in no particular order) I think could be good to expand on in the future:
+
+- I've added an inline markdown editor and filepath input so users can directly create new files, that are then added to the content directory and parsed along with the other, pre-existing content files. I like this idea in theory, but it needs some more work;
+  - Input validation/sanitisation required for safety's sake; no XSS attacks pls & thx
+  - File path input could be made a lot more robust - for instance, trimming any trailing `/` separators users might add, and sanitisation here too
+  - Potentially some authorisation around who can access the editor - stop random users adding new content to the CMS
+  - Page styling in general - my focus for this section was on getting the functionality working, a lot more custom styling could be done to it
+  - The biggest issue I have with the current implementation is that while the new content file is created and parsed successfully (easier to see while running locally - check your `content` & `views/parsed-content` directories and watch the new files roll in 😎), since the content files are parsed, etc. at application start, new files added aren't visible correctly in the nav/directly through URL until the application has been restarted. I didn't have the time to find a solution to this I really liked, but would like to revisit
+
+- File checking and sanitisation in general, potentially. I've added a check so only files with the `.md` extension get parsed and presented, but it would be good to ensure these all contain valid markdown and no embedded scripts, etc.
+
+- Adding some linting would be useful
+
+- Styling updates in general; I went for a clean look on the app, but there's a lot more could be done to make it look more polished. Also - the font may be a controversial choice, but it's literally called [Acme](https://fonts.google.com/specimen/Acme), so I felt compelled to use it.
+
+- I'd like to expand the testing further - right now it covers basic routing and route handling in the app, but could expand it to cover the various util functions for more comprehensive coverage.
+
+<br />
+<hr />
+
+**Thanks for reading folks - take it easy** 👋
