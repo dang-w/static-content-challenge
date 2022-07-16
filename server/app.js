@@ -21,6 +21,7 @@ app.use(express.static(path.join(__dirname , '../static')));
 app.use(express.urlencoded({ extended: false }));
 
 app.set('views', path.join(__dirname, 'views'));
+// templating engine to add html fragments into template file
 nunjucks.configure('views', {
   express: app,
   autoescape: true
@@ -56,6 +57,9 @@ app.get('/new-content', (req, res) => {
 });
 
 app.post('/upload', express.json(), (req, res) => {
+  // handler for adding new markdown files
+  // creates new directory path and writes markdown to new
+  // md file
   const { markdown, filepath } = req.body;
 
   fs.mkdirSync(`${contentPath}/${filepath}`, { recursive: true });
@@ -65,6 +69,9 @@ app.post('/upload', express.json(), (req, res) => {
 });
 
 app.get(contentUrls, (req, res) => {
+  // route handler for all content found and parsed in the
+  // content dir - contentUrls is the array of paths to these
+  // parsed files returned from the parseContentData util function
   try {
     const { originalUrl = '' } = req;
     const resFilePath = path.join(parsedContentPath, originalUrl, 'content.html');
@@ -83,6 +90,7 @@ app.get(contentUrls, (req, res) => {
 });
 
 app.get('*', (req, res) => {
+  // handler for any other routes - returns 404 page
   errorHandler(res);
 });
 

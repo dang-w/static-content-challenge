@@ -19,13 +19,15 @@ const isMarkdown = pathString => path.extname(pathString) === '.md';
 // callback function to the glob package function call
 const getContentFiles = (src) => glob.sync(src + '/**/*');
 
-// !!!!!!!!!! comment on below
+// function to locate all content dir files and
+// convert these to html, so they can be merged with
+// template.html before being sent to user
 const parseFiles = (contentPath, parsedContentPath) => {
   const contentUrls = [];
 
   getContentFiles(contentPath).forEach(pathString => {
     if (isFile(pathString) && isMarkdown(pathString)) {
-      // path.dirname gives us the absolute path to the file, and removes
+      // path.dirname gives us the path to the file, and removes
       // the file extension from the resulting string.
       // Then use .replace to remove the known path up to and including
       // 'content' dir, which gives us the URL structure they should be
@@ -33,11 +35,15 @@ const parseFiles = (contentPath, parsedContentPath) => {
       const urlPath = path.dirname(pathString).replace(`${contentPath}`, '');
       contentUrls.push(urlPath);
 
-      // !!!!!!!!!! comment on below
+      // access the content file contents (lol), use marked
+      // library to parse this from markdown to html, and construct
+      // the path for the new parsed file
       const fileContents = fs.readFileSync(pathString, 'utf-8');
       const fileWithMarkdown = marked.parse(fileContents);
       const newPath = `${parsedContentPath}${urlPath}`;
 
+      // make the directory on the new path and
+      // write the new file to it
       fs.mkdirSync(newPath, { recursive: true });
       fs.writeFileSync(`${newPath}/content.html`, fileWithMarkdown);
     }
@@ -50,7 +56,7 @@ const parseContentData = (contentPath, parsedContentPath) => {
   checkDir(contentPath);
   const contentUrls = parseFiles(contentPath, parsedContentPath);
   const navMenu = contentUrls.map((contentUrl) => {
-    // Converting URL to link text;
+    // Converting URL to nav link text;
     // lower case all text, remove leading /, replace remaining / with >,
     // replace - with spaces, and trim any remaining whitespace
     const parsedText = contentUrl
@@ -76,8 +82,6 @@ const errorHandler = (res) => {
 };
 
 module.exports = {
-  // checkDir,
-  // parseFiles,
   parseContentData,
   errorHandler,
 };
