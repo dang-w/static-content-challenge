@@ -27,12 +27,25 @@ app.set('view engine', 'html');
 
 checkDir(contentPath);
 const contentUrls = parseFiles(contentPath, parsedContentPath);
+const navMenu = contentUrls.map((contentUrl) => {
+  // Converting URL to link text;
+  // lower case all text, remove leading /, replace remaining / with >,
+  // replace - with spaces, and trim any remaining whitespace
+  const parsedText = contentUrl
+    .toLowerCase()
+    .replace('/', '')
+    .replaceAll('/', ' > ')
+    .replaceAll('-', ' ')
+    .trim();
+
+  return `<a class="nav-item" href="${contentUrl}">${parsedText}</a>`;
+});
 
 app.get('/', (req, res) => {
   const resFilePath = path.join(contentPath, 'landing.html');
   const content = fs.readFileSync(resFilePath, 'utf8');
 
-  res.render('template.html', { content }, (err, html) => {
+  res.render('template.html', { content, nav: navMenu.join(' | ') }, (err, html) => {
     if (err) {
       errorHandler(res);
     }
@@ -47,7 +60,7 @@ app.get(contentUrls, (req, res) => {
     const resFilePath = path.join(parsedContentPath, originalUrl, 'content.html');
     const content = fs.readFileSync(resFilePath, 'utf8');
 
-    res.render('template.html', { content }, (err, html) => {
+    res.render('template.html', { content, nav: navMenu.join(' | ') }, (err, html) => {
       if (err) {
         errorHandler(res);
       }

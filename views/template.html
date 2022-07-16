@@ -10,11 +10,17 @@
         <title>Welcome to Acme</title>
     </head>
     <body>
-      <div id="body-container">
+      <div id="header-container">
         <header>
-          <h1>Acme Co. CMS</h1>
-          <img id="acme-logo" src="/images/acme-logo.png" alt="The Acme Co. logo" />
+          <a href="/">
+            <h1>Acme Co. CMS</h1>
+          </a>
         </header>
+        <nav id="nav">
+          {{nav|safe}}
+        </nav>
+      </div>
+      <div id="body-container">
         <section id="content">
           {{content|safe}}
         </section>
@@ -22,6 +28,7 @@
           <p>
             Copyright 2022-2022 by Acme Co. All Rights Reserved.
           </p>
+          <img id="acme-logo" src="/images/acme-logo.png" alt="The Acme Co. logo" />
         </footer>
       </div>
     </body>
