@@ -62,12 +62,12 @@ const parseContentData = (contentPath, parsedContentPath) => {
     const parsedText = contentUrl
       .toLowerCase()
       .replace('/', '')
-      .replaceAll('/', ' > ')
       .replaceAll('-', ' ')
+      .replaceAll('/', ' ><br />')
       .trim();
 
     return `<a class="nav-item" href="${contentUrl}">${parsedText}</a>`;
-  }).join(' | ');
+  }).join('');
 
   return { contentUrls, navMenu };
 };

@@ -6,31 +6,31 @@
         <link rel="stylesheet"  href="/styles/styles.css" type="text/css" />
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Acme&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="https://unpkg.com/easymde/dist/easymde.min.css">
         <script src="https://unpkg.com/easymde/dist/easymde.min.js"></script>       <title>Welcome to Acme</title>
     </head>
     <body>
-      <div id="header-container">
+      <div id="page-container">
         <header>
           <a href="/">
             <h1>Acme Co. CMS</h1>
           </a>
         </header>
-        <nav id="nav">
-          {{nav|safe}}
-        </nav>
+        <div id="body">
+          <nav id="nav">
+            {{nav|safe}}
+          </nav>
+          <section id="content">
+            {{content|safe}}
+          </section>
+        </div>
+        <footer>
+          <p>
+            Copyright 2022-2022 by Acme Co. All Rights Reserved.
+          </p>
+          <img id="acme-logo" src="/images/acme-logo.png" alt="The Acme Co. logo" />
+        </footer>
       </div>
-      <div id="body-container">
-        <section id="content">
-          {{content|safe}}
-        </section>
-      </div>
-      <footer>
-        <p>
-          Copyright 2022-2022 by Acme Co. All Rights Reserved.
-        </p>
-        <img id="acme-logo" src="/images/acme-logo.png" alt="The Acme Co. logo" />
-      </footer>
     </body>
 </html>

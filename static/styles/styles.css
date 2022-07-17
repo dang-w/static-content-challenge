@@ -1,119 +1,131 @@
-body {
+html, body {
   height: 100%;
-  min-height: 100%;
   width: 100%;
   margin: 0;
-  font-family: 'Acme', sans-serif;
+}
+
+body {
+  font-family: 'Work Sans', sans-serif;
   font-size: 16px;
+  font-weight: 600;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+#page-container {
+  height: 100%;
+  min-height: 100%;
+  width: auto;
+  border: 3px solid #000;
+  text-align: center;
+  background-color: #FCFCFA;
 }
 
 h1 {
   font-size: 3.5em;
 }
 
-#header-container {
-  display: flex;
-}
-
 header {
-  top: 0;
-  left: 0;
-  right: 0;
-  position: fixed;
-  display: inline-flex;
+  border-bottom: 3px solid #000;
+  display: flex;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
   background-color: #F9C000;
-  height: 4rem;
+  height: 6rem;
   font-size: 1.2rem;
   padding: 0 1rem;
-  width: 100vw;
-  z-index: 5;
 }
 
 header > a {
   color: inherit;
-  padding: 1rem 0;
+  padding: 1.75rem 1rem 1.75rem 1rem;
   text-decoration: none;
 }
 
-header > a {
+header > a:hover {
+  cursor: pointer;
+}
+
+#body {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  max-height: calc(100vh - 10rem);
+  width: 100%;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  align-items: stretch;
+}
+
+#body a {
+  border-radius: 6px;
   color: inherit;
-  padding: 1rem 0;
-  text-decoration: none;
+}
+
+#body a:hover {
+  background-color: #F9C000;
   cursor: pointer;
 }
 
 #nav {
-  top: 4rem;
-  left: 0;
-  right: 0;
-  position: fixed;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  border-right: 3px solid #000;
+  order: 1;
   font-size: 1.1rem;
-  padding: 1rem 0;
-  width: 100vw;
-  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-around;
+  min-width: 15%;
 }
 
 .nav-item {
-  padding: .5rem 1.5rem;
+  display: block;
+  line-height: 1.5rem;
+  padding: .5rem 1rem;
+  align-self: center;
 }
 
-#body-container {
-  text-align: center;
-  background-color: #FCFCFA;
-  height: 100vh;
-  min-height: 100vh;
+#content {
+  order: 2;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: 25px;
-  color: #000;
-  width: 100vw;
-}
-
-#content {
-  max-width: 65vw;
+  margin: auto;
+  max-width: 70%;
 }
 
 #content > h1 {
-  padding-bottom: 1.5rem;
+  font-size: 4rem;
+  font-style: italic;
+  padding-bottom: 2.5rem;
 }
 
 #content > p {
+  font-size: 20px;
   line-height: 2.5rem;
+  max-width: 65%;
 }
 
 #editor {
   min-height: 450px;
-  min-width: 60vw;
+  min-width: 60%;
 }
 
 input,
 label {
-    margin: .4rem 0;
+  margin: .4rem 0;
 }
 
 footer {
+  border-top: 3px solid #000;
   display: flex;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  position: fixed;
-  text-align: center;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  width: auto;
-  margin: 1rem 0 0 0;
   background-color: #FCFCFA;
-  height: 4rem;
+  height: 3.5rem;
 }
 
 #acme-logo {
