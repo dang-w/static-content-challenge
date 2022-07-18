@@ -60,7 +60,7 @@ I've listed a number of different aspects (in no particular order) I think could
 
 - Adding some linting would be useful
 
-- Styling updates in general; I went for a clean look on the app, but there's a lot more could be done to make it look more polished. Also - the font may be a controversial choice, but it's literally called [Acme](https://fonts.google.com/specimen/Acme), so I felt compelled to use it.
+- Styling updates in general; I went for a clean look on the app, but there's a lot more could be done to make it look more polished. Since there was no guidance re how styling should look, I took the opportunity to experiment a little - some images would really add to the design, but I didn't have a chance to add any unfortunately. ~Also - the font may be a controversial choice, but it's literally called [Acme](https://fonts.google.com/specimen/Acme), so I felt compelled to use it~ - scratch that, I got tired of looking at it and went for a cleaner option in the end, sorry meme font.
 
 - I'd like to expand the testing further - right now it covers basic routing and route handling in the app, but could expand it to cover the various util functions for more comprehensive coverage.
 
